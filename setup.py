@@ -6,7 +6,7 @@ install_reqs = [*parse_requirements("./requirements.txt", session=False)]
 
 HERE = pathlib.Path(__file__).parent
 
-README = (HERE / "Readme.md").read_text()
+README = (HERE / "README.md").read_text()
 
 setup(
     name="labelme2yolov7segmentation",
