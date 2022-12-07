@@ -1,6 +1,10 @@
+import json
 import pathlib
 from setuptools import setup
 from pip._internal.req import parse_requirements
+
+with open("cz.json", "r", encoding="utf-8") as f:
+    cz_file = json.load(f)
 
 install_reqs = [*parse_requirements("./requirements.txt", session=False)]
 
@@ -10,7 +14,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="labelme2yolov7segmentation",
-    version="0.1.1",
+    version=cz_file["commitizen"]["version"],
     description="Convert LabelMe format to yolov7 for segmentation.",
     long_description=README,
     long_description_content_type="text/markdown",
