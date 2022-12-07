@@ -1,0 +1,20 @@
+{
+    "files.exclude": {
+        "**/.venv": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.ipynb_checkpoints":true,
+        "**/**.egg-info":true,
+        "**/build":true,
+    },
+    "[python]":{
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.linting.pylintArgs": [
+        "--rcfile=${workspaceFolder}/.pylintrc"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}

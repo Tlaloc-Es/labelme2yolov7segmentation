@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+click = "*"
+pydantic = "*"
+
+[dev-packages]
+black = "*"
+pytest = "*"
+twine = "*"
+setuptools = "*"
+pip = "*"
+commitizen = "*"
+
+[requires]
+python_version = "3.10"
+
+[scripts]
+build = "python setup.py bdist_wheel"
+bump_version = "cz bump --changelog"
