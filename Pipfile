@@ -22,3 +22,4 @@ python_version = "3.10"
 [scripts]
 build = "python setup.py bdist_wheel"
 bump_version = "cz bump --changelog"
+upload = "twine upload dist/*" 
