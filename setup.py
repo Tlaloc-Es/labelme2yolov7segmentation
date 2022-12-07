@@ -18,7 +18,7 @@ setup(
     description="Convert LabelMe format to yolov7 for segmentation.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/Tlaloc-Es/labelme2yolov7segmentation/settings",
+    url="https://github.com/Tlaloc-Es/labelme2yolov7segmentation",
     author="Tlaloc-Es",
     license="MIT",
     classifiers=[
