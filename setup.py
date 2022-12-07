@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="labelme2yolov7segmentation",
-    version="0.1.0",
+    version="0.1.1",
     description="Convert LabelMe format to yolov7 for segmentation.",
     long_description=README,
     long_description_content_type="text/markdown",
