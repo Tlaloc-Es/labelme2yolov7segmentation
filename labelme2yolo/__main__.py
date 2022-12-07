@@ -10,6 +10,7 @@ from numpy import ndarray
 from pydantic import BaseModel, conlist
 import click
 
+
 ALLOWED_SHAPES = ["polygon"]
 
 
@@ -49,7 +50,7 @@ def process(values: ndarray, width: float, height: float) -> List[float]:
 
 
 def write_labels(labels: List[str], output_path: str) -> None:
-    with open(os.path.join(output_path, f"labels.txt"), "w") as fw:
+    with open(os.path.join(output_path, "labels.txt"), "w", encoding="utf-8") as fw:
         for i, label in enumerate(labels):
             fw.write(f"{label}:{i}")
 
@@ -57,7 +58,9 @@ def write_labels(labels: List[str], output_path: str) -> None:
 def write_shapes(
     output_path: str, file_name: str, shapes_processed: List[List[float]]
 ) -> None:
-    with open(os.path.join(output_path, f"{file_name}.txt"), "w") as fw:
+    with open(
+        os.path.join(output_path, f"{file_name}.txt"), "w", encoding="utf-8"
+    ) as fw:
         for shape in shapes_processed:
             fw.write(" ".join(map(str, shape)))
 
