@@ -1,3 +1,9 @@
+## 1.0.0 (2022-12-09)
+
+### Feat
+
+- **create-folder-estructure-for-yolov7**: add support to create a folder structure for yolov7, with train val split dataset
+
 ## 0.1.2 (2022-12-08)
 
 ## 0.1.1 (2022-12-08)
