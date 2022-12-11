@@ -19,9 +19,11 @@ class OutputPaths(BaseModel):
     images_path: str
     images_train_path: str
     images_val_path: str
+    images_test_path: str
     labels_path: str
     labels_train_path: str
     labels_val_path: str
+    labels_test_path: str
 
 
 class SplitedDataset(BaseModel):
@@ -51,3 +53,11 @@ class ShapeProcessed(BaseModel):
 
 class ShapesProcessed(BaseModel):
     shapes: List[ShapeProcessed] = []
+
+
+class YoloV7YML(BaseModel):
+    train: str
+    val: str
+    test: str
+    nc: int
+    names: List[str]

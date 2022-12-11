@@ -7,6 +7,7 @@ name = "pypi"
 numpy = "*"
 click = "*"
 pydantic = "*"
+pyyaml = "*"
 
 [dev-packages]
 black = "*"
@@ -20,6 +21,7 @@ commitizen = "*"
 python_version = "3.10"
 
 [scripts]
+test = "python -m pytest -s -v test/"
 build = "python setup.py bdist_wheel"
 bump_version = "cz bump --changelog"
-upload = "twine upload dist/*" 
+upload = "twine upload dist/*"

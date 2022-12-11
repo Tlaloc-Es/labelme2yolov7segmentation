@@ -6,6 +6,7 @@ import shutil
 from pathlib import Path
 from glob import glob, iglob
 from typing import List, Optional
+import yaml
 import numpy as np
 from numpy import ndarray
 import click
@@ -16,9 +17,13 @@ from datatypes import (
     ShapeProcessed,
     ShapesProcessed,
     FileNameAndExtension,
+    YoloV7YML,
 )
 
 ALLOWED_SHAPES = ["polygon"]
+TRAIN_TXT = "train.txt"
+VAL_TXT = "val.txt"
+TEST_TXT = "test.txt"
 
 
 def flatten(nested_list):
@@ -29,7 +34,7 @@ def round_sig(number: float, sig: int = 6):
     return round(number, sig - int(floor(log10(abs(number)))) - 1)
 
 
-def process(values: ndarray, width: float, height: float) -> List[float]:
+def process(values: ndarray, width: int, height: int) -> List[float]:
     odd = values[0::2]
     even = values[1::2]
 
@@ -44,12 +49,9 @@ def process(values: ndarray, width: float, height: float) -> List[float]:
     ]
 
 
-def write_labels(labels: List[str], output_path: str) -> None:
-    with open(
-        os.path.join(output_path, "labels.txt"), "w", encoding="utf-8"
-    ) as file_writer_handler:
-        for i, label in enumerate(labels):
-            file_writer_handler.write(f"{label}:{i}\n")
+def write_yolov7_yml(yolov7_yml: YoloV7YML, output_path: str) -> None:
+    with open(os.path.join(output_path, "project.yml"), "w") as file:
+        yaml.dump(yolov7_yml.dict(), file)
 
 
 def write_shapes(
@@ -57,16 +59,25 @@ def write_shapes(
     shapes_processed: ShapesProcessed,
     output_paths: OutputPaths,
     train_percentage: int = 70,
+    val_percentage: int = 20,
 ) -> None:
     shapes = np.array(shapes_processed.shapes)
-    index_to_split = int((len(shapes) * train_percentage) / 100)
+    index_to_split_train = int((len(shapes) * train_percentage) / 100)
+    index_to_split_test = (
+        int((len(shapes) * val_percentage) / 100) + index_to_split_train
+    )
 
     shapes = np.array(shapes_processed.shapes)
     np.random.shuffle(shapes)
-    train, val = shapes[:index_to_split], shapes[index_to_split:]
+    train, val, test = (
+        shapes[:index_to_split_train],
+        shapes[index_to_split_train:index_to_split_test],
+        shapes[index_to_split_test:],
+    )
 
     shapes_processed_train = ShapesProcessed(shapes=train.tolist())
     shapes_processed_val = ShapesProcessed(shapes=val.tolist())
+    shapes_processed_test = ShapesProcessed(shapes=test.tolist())
 
     process_write_shapes(
         source_path,
@@ -74,7 +85,7 @@ def write_shapes(
         output_paths.images_train_path,
         output_paths.labels_train_path,
         output_paths.dataset_path,
-        "train.txt",
+        TRAIN_TXT,
     )
     process_write_shapes(
         source_path,
@@ -82,7 +93,15 @@ def write_shapes(
         output_paths.images_val_path,
         output_paths.labels_val_path,
         output_paths.dataset_path,
-        "test.txt",
+        VAL_TXT,
+    )
+    process_write_shapes(
+        source_path,
+        shapes_processed_test,
+        output_paths.images_test_path,
+        output_paths.labels_test_path,
+        output_paths.dataset_path,
+        TEST_TXT,
     )
 
 
@@ -112,6 +131,8 @@ def process_write_shapes(
         )
 
         shutil.copyfile(source_image_path, output_image_path)
+
+        output_image_path = output_image_path.replace(dataset_path, ".")
 
         for pyligon in shape.polygons:
             with open(
@@ -153,27 +174,33 @@ def create_dataset(output_path: str) -> OutputPaths:
     images_path = os.path.join(output_path, "images")
     images_train_path = os.path.join(images_path, "train")
     images_val_path = os.path.join(images_path, "val")
+    images_test_path = os.path.join(images_path, "test")
 
     labels_path = os.path.join(output_path, "labels")
     labels_train_path = os.path.join(labels_path, "train")
     labels_val_path = os.path.join(labels_path, "val")
+    labels_test_path = os.path.join(labels_path, "test")
 
     os.makedirs(images_path, exist_ok=True)
     os.makedirs(images_train_path, exist_ok=True)
     os.makedirs(images_val_path, exist_ok=True)
+    os.makedirs(images_test_path, exist_ok=True)
 
     os.makedirs(labels_path, exist_ok=True)
     os.makedirs(labels_train_path, exist_ok=True)
     os.makedirs(labels_val_path, exist_ok=True)
+    os.makedirs(labels_test_path, exist_ok=True)
 
     return OutputPaths(
         dataset_path=output_path,
         images_path=images_path,
         images_train_path=images_train_path,
         images_val_path=images_val_path,
+        images_test_path=images_test_path,
         labels_path=labels_path,
         labels_train_path=labels_train_path,
         labels_val_path=labels_val_path,
+        labels_test_path=labels_test_path,
     )
 
 
@@ -221,7 +248,15 @@ def main(source_path: str, output_path: str):
 
     write_shapes(source_path, shapes_processed, output_paths)
 
-    write_labels(labels, output_path)
+    yolov7_yml = YoloV7YML(
+        train=os.path.join(output_paths.dataset_path, TRAIN_TXT),
+        val=os.path.join(output_paths.dataset_path, VAL_TXT),
+        test=os.path.join(output_paths.dataset_path, TEST_TXT),
+        nc=len(labels),
+        names=labels,
+    )
+
+    write_yolov7_yml(yolov7_yml, output_path)
 
 
 if __name__ == "__main__":
