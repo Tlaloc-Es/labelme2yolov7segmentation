@@ -1,12 +1,13 @@
+import json
 import os
 import pathlib
-import json
+
 import numpy as np
+
 from labelme2yolo.__main__ import process
 
 
 def test_conversion():
-
     current_path = pathlib.Path(__file__).parent.resolve()
 
     with open(

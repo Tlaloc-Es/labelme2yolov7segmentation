@@ -1,24 +1,25 @@
-from math import log10, floor
 import itertools
-import os
 import json
+import os
 import shutil
-from pathlib import Path
 from glob import glob, iglob
+from math import floor, log10
+from pathlib import Path
 from typing import List, Optional
-import yaml
-import numpy as np
-from numpy import ndarray
+
 import click
+import numpy as np
+import yaml
 from datatypes import (
+    FileNameAndExtension,
     LabelMe,
     OutputPaths,
     Polygon,
     ShapeProcessed,
     ShapesProcessed,
-    FileNameAndExtension,
     YoloV7YML,
 )
+from numpy import ndarray
 
 ALLOWED_SHAPES = ["polygon"]
 TRAIN_TXT = "train.txt"
@@ -120,7 +121,6 @@ def process_write_shapes(
     dataset_path: str,
     label_file_name: str,
 ):
-
     for shape in shapes_processed.shapes:
         source_image_path = get_image_path(source_path, shape.file_name)
         file_name_and_extension = get_file_name_and_extension(source_image_path)
@@ -162,7 +162,7 @@ def get_image_path(source_path: str, file_name: str) -> Optional[str]:
 
 
 def read_labelme_file(path: str) -> LabelMe:
-    with open(path, "r", encoding="utf-8") as file_reader_handler:
+    with open(path, encoding="utf-8") as file_reader_handler:
         data = json.load(file_reader_handler)
         label_me_value = LabelMe(
             **data, image_height=data["imageHeight"], image_width=data["imageWidth"]
