@@ -9,7 +9,7 @@ repository = "https://github.com/Tlaloc-Es/labelme2yolov7segmentation"
 readme = "README.md"
 
 [tool.poetry.scripts]
-labelme2yolo = "labelme2yolo.__main__:main"
+labelme2yolo = "labelme2yolov7segmentation.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
