@@ -1,10 +1,29 @@
 # LabelMe2Yolov7Segmentation
 
-This repository was designed in order to label images using [LabelMe](https://github.com/wkentaro/labelme) and transform to [YoloV7](https://github.com/WongKinYiu/yolov7) format for instance segmentation
+<div align="center">
 
-## Instalation
+[![Downloads](https://static.pepy.tech/personalized-badge/labelme2yolov7segmentation?period=month&units=international_system&left_color=grey&right_color=blue&left_text=PyPi%20Downloads)](https://pepy.tech/project/labelme2yolov7segmentation)
+[![Stars](https://img.shields.io/github/stars/Tlaloc-Es/labelme2yolov7segmentation?color=yellow&style=flat)](https://github.com/Tlaloc-Es/labelme2yolov7segmentation/stargazers)
 
-`pip install labelme2yolov7segmentation`
+</div>
+
+Convert [LabelMe](https://github.com/wkentaro/labelme) format into [YoloV7](https://github.com/WongKinYiu/yolov7) format for instance segmentation.
+
+## Instalation [![PyPI](https://img.shields.io/pypi/v/labelme2yolov7segmentation.svg)](https://pypi.org/project/labelme2yolov7segmentation/)
+
+You can install `labelme2yolov7segmentation` from [Pypi](https://pypi.org/project/labelme2yolov7segmentation/). It's going to install the library itself and its prerequisites as well.
+
+```bash
+pip install labelme2yolov7segmentation
+```
+
+You can install `labelme2yolov7segmentation` from its source code.
+
+```bash
+git clone https://github.com/Tlaloc-Es/labelme2yolov7segmentation.git
+cd labelme2yolov7segmentation
+pip install -e .
+```
 
 ## Usage
 
