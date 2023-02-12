@@ -10,7 +10,7 @@ from typing import List, Optional
 import click
 import numpy as np
 import yaml
-from datatypes import (
+from labelme2yolov7segmentation.datatypes import (
     FileNameAndExtension,
     LabelMe,
     OutputPaths,
