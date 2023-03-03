@@ -43,7 +43,7 @@ class Polygon(BaseModel):
     label_name: str
 
     def get_representation(self):
-        return str(self.label_index) + " " + " ".join(map(str, self.points))
+        return f"{self.label_index} {' '.join(map(str, self.points))}"
 
 
 class ShapeProcessed(BaseModel):

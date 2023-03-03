@@ -51,7 +51,7 @@ def process(values: ndarray, width: int, height: int) -> List[float]:
 
 
 def write_yolov7_yml(yolov7_yml: YoloV7YML, output_path: str) -> None:
-    with open(os.path.join(output_path, "project.yml"), "w") as file:
+    with open(os.path.join(output_path, "project.yml"), "w", encoding="utf-8") as file:
         yaml.dump(yolov7_yml.dict(), file)
 
 
