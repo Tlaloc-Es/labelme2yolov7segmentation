@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Tlaloc-Es
+title: "labelme2yolov7segmentation"
+version: 2.0.3
+date-released: 2023-02-12
