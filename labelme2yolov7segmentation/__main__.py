@@ -32,6 +32,8 @@ def flatten(nested_list):
 
 
 def round_sig(number: float, sig: int = 6):
+    if number == 0:
+        return 0.0
     return round(number, sig - int(floor(log10(abs(number)))) - 1)
 
 
