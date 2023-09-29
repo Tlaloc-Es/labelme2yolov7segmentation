@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "labelme2yolov7segmentation"
-version = "2.0.3"
+version = "2.0.4"
 description = ""
 license = "MIT"
 authors = ["Tlaloc-Es <dev@tlaloc-es.com>"]
@@ -41,7 +41,7 @@ type_check = "mypy src"
 poethepoet = "^0.18.1"
 
 [tool.commitizen]
-version = "2.0.3"
+version = "2.0.4"
 version_files = [
     "pyproject.toml:^version"
 ]
