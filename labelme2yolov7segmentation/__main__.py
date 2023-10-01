@@ -10,6 +10,8 @@ from typing import List, Optional
 import click
 import numpy as np
 import yaml
+from numpy import ndarray
+
 from labelme2yolov7segmentation.datatypes import (
     FileNameAndExtension,
     LabelMe,
@@ -19,7 +21,6 @@ from labelme2yolov7segmentation.datatypes import (
     ShapesProcessed,
     YoloV7YML,
 )
-from numpy import ndarray
 
 ALLOWED_SHAPES = ["polygon"]
 TRAIN_TXT = "train.txt"
@@ -63,19 +64,27 @@ def write_shapes(
     output_paths: OutputPaths,
     train_percentage: int = 70,
     val_percentage: int = 20,
+    test_percentage: int = 10,
 ) -> None:
     shapes = np.array(shapes_processed.shapes)
-    index_to_split_train = int((len(shapes) * train_percentage) / 100)
-    index_to_split_test = (
-        int((len(shapes) * val_percentage) / 100) + index_to_split_train
+
+    total_percentage = train_percentage + val_percentage + test_percentage
+    if total_percentage != 100:
+        raise ValueError(
+            "The sum of train_percentage, val_percentage, and test_percentage must be equal to 100."
+        )
+
+    index_to_split_train = int(len(shapes) * (train_percentage / 100))
+    index_to_split_val = int(len(shapes) * ((train_percentage + val_percentage) / 100))
+    index_to_split_test = int(
+        len(shapes) * ((train_percentage + val_percentage + test_percentage) / 100)
     )
 
-    shapes = np.array(shapes_processed.shapes)
     np.random.shuffle(shapes)
     train, val, test = (
         shapes[:index_to_split_train],
-        shapes[index_to_split_train:index_to_split_test],
-        shapes[index_to_split_test:],
+        shapes[index_to_split_train:index_to_split_val],
+        shapes[index_to_split_val:index_to_split_test],
     )
 
     shapes_processed_train = ShapesProcessed(shapes=train.tolist())
@@ -144,12 +153,12 @@ def process_write_shapes(
             ) as file_append_handler:
                 file_append_handler.write(f"{pyligon.get_representation()}\n")
 
-            with open(
-                os.path.join(dataset_path, label_file_name),
-                "a",
-                encoding="utf-8",
-            ) as file_append_handler:
-                file_append_handler.write(f"{output_image_path}\n")
+        with open(
+            os.path.join(dataset_path, label_file_name),
+            "a",
+            encoding="utf-8",
+        ) as file_append_handler:
+            file_append_handler.write(f"{output_image_path}\n")
 
 
 def get_image_path(source_path: str, file_name: str) -> Optional[str]:
