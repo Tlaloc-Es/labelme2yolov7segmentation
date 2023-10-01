@@ -1,3 +1,9 @@
+## 2.0.5 (2023-10-01)
+
+### Fix
+
+- **label2yolo**: Error when splitting the dataset
+
 ## 2.0.4 (2023-09-29)
 
 ### Fix
